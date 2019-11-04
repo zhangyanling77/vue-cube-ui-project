@@ -9,7 +9,7 @@ import HomeHeader from "./HomeHeader";
 import { createNamespacedHelpers } from "vuex";
 import * as types from "@/store/actions-type";
 
-let { mapActions, mapState } = createNamespacedHelpers("home"); // 把vuex中的命名空间全部定好
+let { mapActions, mapState, mapMutations } = createNamespacedHelpers("home"); // 把vuex中的命名空间全部定好
 
 // import { mapActions } from "vuex";
 export default {
@@ -18,6 +18,11 @@ export default {
   },
   computed: {
     ...mapState(["categories"]) // 执行后返回的是一个对象
+  },
+  created(){
+    // 页面一创建 可以去定义一些公共数据 这些属性不需要去动态监控
+    this.hashMore = true
+    this.offsetIndex = 0
   },
   methods: {
     change(value) {
