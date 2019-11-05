@@ -46,7 +46,9 @@ import {
   Swipe,
   Sticky,
   ScrollNav,
-  ScrollNavBar
+  ScrollNavBar,
+  // custom
+  RecycleList
 } from 'cube-ui'
 
 Vue.use(Button)
@@ -86,3 +88,4 @@ Vue.use(Swipe)
 Vue.use(Sticky)
 Vue.use(ScrollNav)
 Vue.use(ScrollNavBar)
+Vue.use(RecycleList) // 自己将这个组件加入到项目中
