@@ -43,7 +43,7 @@ let router =  new Router({
       path: '/login',
       name: 'login', // import()
       // 匹配到路径后才会加载这个组件
-      component: loadable(() => import('@/views/Login/index.vue'))
+      component: loadable(() => import('@/views/Login.vue'))
     }
   ],
 });
