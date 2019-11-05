@@ -10,7 +10,7 @@ export default {
     next(); // 继续往下走
   },
 
-  // 给每一个hook 对应一个功能
+  // 给每一个hook 对应一个功能 可以做权限校验相关的
   permission: (to, from, next) => {
     next(); // 继续往下走
   }
