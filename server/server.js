@@ -78,7 +78,7 @@ let userList = [{
 router.post('/api/login', async ctx => {
     // 登录接口
     let { username, password } = ctx.request.body
-    let user = userList.find(user => user.name === username && user.password === password)
+    let user = userList.find(user => user.username === username && user.password === password)
     if(user){
         let token = jwt.encode({
             username
