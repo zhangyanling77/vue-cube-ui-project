@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <div class="container">
-      <router-view></router-view>
+      <transition :name="move">
+        <!-- 会根据路径切换 来显示对应的页面 -->
+        <router-view></router-view>
+      </transition>
     </div>
     <div class="footer">
       <cube-tab-bar v-model="selectedLabelDefault" :data="tabs" @change="changeHandler"></cube-tab-bar>
@@ -13,6 +16,7 @@ export default {
   data() {
     return {
       selectedLabelDefault: "/",
+      move: 'slide-left',
       tabs: [
         {
           label: "首页",
@@ -36,6 +40,13 @@ export default {
     // 监控路由属性的变化
     $route: {
       handler(to, from) {
+        if(to && from){
+          if(to.meta.idx > from.meta.idx){
+            this.move = 'slide-left'
+          } else {
+            this.move = 'slide-right'
+          }
+        }
         this.selectedLabelDefault = to.path;
       },
       immediate: true
@@ -75,5 +86,32 @@ html, body, #app {
     font-size: 22px;
     line-height: 26px;
   }
+}
+
+.slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active {
+  transition: all 0.4s linear;
+}
+
+.slide-left-enter-active, .slide-right-enter-active {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.slide-right-enter {
+  transform: translate(-100%);
+}
+
+.slide-right-leave-to {
+  transform: translate(100%);
+}
+
+.slide-left-enter {
+  transform: translate(100%);
+}
+
+.slide-left-leave-to {
+  transform: translate(-100%);
 }
 </style>
