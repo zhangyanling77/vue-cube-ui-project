@@ -1,19 +1,14 @@
-import axios from 'axios'; // 基于promise
-import {
-  Toast
-} from 'cube-ui'
-// axios可以配配置拦截器 我可以给实例增加多个拦截器
-// axios 实例的唯一性 ，我可以给，每个请求 独立增加拦截器
+import axios from 'axios';
+import { Toast } from 'cube-ui'
 import store from '@/store';
 import * as types from '@/store/actions-type'
 
-// 开发的时候 localhost  /xxx
 class AjaxRequest {
   constructor() {
     // development production
     this.baseURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000/api' :
-      '/'; // 基础路径
-    this.timeout = 3000; // 超时时间
+      '/';
+    this.timeout = 3000; 
     this.queue = {}
   }
   setInterceptor(instance, url) {
@@ -21,7 +16,6 @@ class AjaxRequest {
       // 每次请求前 将token 放到请求中
       config.token = localStorage.getItem('token') || '';
       // 每次请求的时候 都拿到一个取消请求的方法
-      
       let Cancel = axios.CancelToken; // 产生一个请求令牌
       config.cancelToken = new Cancel(function (c) {
         // vuex
@@ -38,7 +32,7 @@ class AjaxRequest {
         this.toast.show(); // 如果没有请求过 显示loading
       }
       // 请求前 增加请求队列
-      this.queue[url] = url; // 存入队列中
+      this.queue[url] = url; 
       return config;
     }, err => {
       return Promise.reject(err);
@@ -71,14 +65,8 @@ class AjaxRequest {
       timeout: this.timeout
     }
     this.setInterceptor(instance, options.url); // 给这个实例增加拦截功能
-    return instance(config); // 返回的是一个promise
+    return instance(config); 
   }
 }
 
 export default new AjaxRequest
-// new AjaxRequest().request({
-//   url: 'xxxx',
-//   xxasd
-// }).then(data => {
-
-// })
