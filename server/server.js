@@ -1,9 +1,14 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const router = new Router();
+const bodyParser = require('koa-bodyparser');
+const jwt = require('jwt-simple');
+
 const app = new Koa();
 const cors = require('koa2-cors');
+const secret = 'jw'
 app.use(cors());
+app.use(bodyParser());
 
 // 分类
 const category = require('./category');
@@ -17,6 +22,14 @@ router.get('/api/category', async ctx => {
         data: categories
     }
 });
+
+const sleep = (time) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve()
+        }, time)
+    })
+}
 
 const slides = require('./slides');
 router.get('/api/slides', async ctx => {
@@ -57,5 +70,56 @@ router.get('/api/lessonList/:id', async ctx => {
     //      data: slides
     //  }
 })
+
+let userList = [{
+    username: 'admin',
+    password: 'admin'
+}]
+router.post('/api/login', async ctx => {
+    // 登录接口
+    let { username, password } = ctx.request.body
+    let user = userList.find(user => user.name === username && user.password === password)
+    if(user){
+        let token = jwt.encode({
+            username
+        }, secret)
+        ctx.body = {
+            code: 0,
+            data: {
+                username,
+                token
+            }
+        }
+    } else {
+        ctx.body = {
+            code: 1,
+            data: '登录失败，请检查账号密码'
+        }
+    }
+}) 
+
+router.get('/api/validate', async ctx => {
+    let token = ctx.headers['token']
+    if(!token){
+        ctx.body = {
+            code: 1,
+            data: '用户未登录'
+        }
+    } else {
+        try{
+            let user = jwt.decode(token, secret)
+            ctx.body = {
+                code: 0,
+                data: user
+            }
+        } catch (e) {
+             ctx.body = {
+                code: 1,
+                data: 'token不正确'
+            }
+        }
+    }
+})
+
 app.use(router.routes()).use(router.allowedMethods());
 app.listen(3000);
