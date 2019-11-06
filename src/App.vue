@@ -41,6 +41,7 @@ export default {
     $route: {
       handler(to, from) {
         if(to && from){
+          // 路由切换方向动画控制
           if(to.meta.idx > from.meta.idx){
             this.move = 'slide-left'
           } else {
@@ -54,7 +55,6 @@ export default {
   },
   methods: {
     changeHandler(label) {
-      // if you clicked different tab, this methods can be emitted
       this.$router.push(label);
     }
   }
