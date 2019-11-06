@@ -5,41 +5,42 @@ import * as types from '@/store/actions-type'
 
 class AjaxRequest {
   constructor() {
-    // development production
-    this.baseURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000/api' :
-      '/';
-    this.timeout = 3000; 
+    this.baseURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000/api' : '/'
+    this.timeout = 3000
     this.queue = {}
   }
+  // 设置拦截器
   setInterceptor(instance, url) {
-    instance.interceptors.request.use((config) => { // 请求拦截
+    // 请求拦截
+    instance.interceptors.request.use((config) => { 
       // 每次请求前 将token 放到请求中
       config.token = localStorage.getItem('token') || '';
       // 每次请求的时候 都拿到一个取消请求的方法
       let Cancel = axios.CancelToken; // 产生一个请求令牌
       config.cancelToken = new Cancel(function (c) {
-        // vuex
-        store.commit(types.PUSH_TOKEN, c); // 订阅
+        store.commit(types.PUSH_TOKEN, c);
       });
       // 只要页面变化 就要去依次调用cancel方法 路由的钩子 beforeEach
       
       // 显示loading
       if (Object.keys(this.queue).length === 0) {
         this.toast = Toast.$create({
-          txt: '正在加载', // 每次显示toast组件时 都叫 正在加载 否则别人把txt的值改了
+          txt: '正在加载',
           time: 0
         });
-        this.toast.show(); // 如果没有请求过 显示loading
+        this.toast.show(); 
       }
       // 请求前 增加请求队列
       this.queue[url] = url; 
+      
       return config;
     }, err => {
       return Promise.reject(err);
     });
-    instance.interceptors.response.use((res) => { // 响应拦截
-      // 关闭loading
-      // 可以对返回的状态码做各种匹配
+    
+    // 响应拦截
+    instance.interceptors.response.use((res) => { 
+      // 关闭loading   还可以对返回的状态码做各种匹配
       delete this.queue[url]; //  请求完成后删除对应的url
       if (Object.keys(this.queue).length === 0) {
         this.toast.hide(); // 当队列被清空隐藏掉即可
@@ -50,9 +51,9 @@ class AjaxRequest {
         return Promise.reject(res.data)
       }
     }, err => {
-      delete this.queue[url]; //  请求完成后删除对应的url
+      delete this.queue[url];
       if (Object.keys(this.queue).length === 0) {
-        this.toast.hide(); // 当队列被清空隐藏掉即可
+        this.toast.hide(); 
       }
       return Promise.reject(err);
     })
@@ -64,7 +65,9 @@ class AjaxRequest {
       baseURL: this.baseURL,
       timeout: this.timeout
     }
-    this.setInterceptor(instance, options.url); // 给这个实例增加拦截功能
+    
+    this.setInterceptor(instance, options.url); 
+    
     return instance(config); 
   }
 }
