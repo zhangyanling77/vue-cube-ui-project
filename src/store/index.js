@@ -1,13 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { 
-  Toast 
-} from 'cube-ui';
+import { Toast } from 'cube-ui';
 import home from './modules/home'
 import * as types from './actions-type'
-import {
-  login
-} from '@/api/user'
+import { login } from '@/api/user'
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -39,13 +36,13 @@ export default new Vuex.Store({
         let result = await login(user);
         commit(types.SET_USER, result);
         // 将token存储到localStorage中
-        localStorage.setItem('token', result.token); // 存储token
+        localStorage.setItem('token', result.token); 
       } catch(e){
         console.log(e);
         Toast.$create({
           txt: '用户无法登录',
           time: 2000
-        }).show(); // 显示错误提示
+        }).show(); 
       }
     }
   }
