@@ -6,7 +6,8 @@ const jwt = require('jwt-simple');
 
 const app = new Koa();
 const cors = require('koa2-cors');
-const secret = 'jw'
+const secret = 'zyl'
+
 app.use(cors());
 app.use(bodyParser());
 
@@ -41,13 +42,10 @@ router.get('/api/slides', async ctx => {
 
 router.get('/api/lessonList/:id', async ctx => {
     let id = ctx.params.id;
-    let {
-        size,
-        offset
-    } = ctx.query;
+    let { size, offset } = ctx.query;
     size = parseInt(size);
     offset = parseInt(offset)
-    let item = category.find(c => c.id == id); // 找到对应分类
+    let item = category.find(c => c.id == id); // 查找对应的分类
     let result = []
     if (!item) {
         let list = category.reduce((memo, current) => {
@@ -63,12 +61,8 @@ router.get('/api/lessonList/:id', async ctx => {
         data: {
             result,
             hasMore: result.length == size
-        },
+        }
     }
-    //  ctx.body = {
-    //      code: 0,
-    //      data: slides
-    //  }
 })
 
 let userList = [{
