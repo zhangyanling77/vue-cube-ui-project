@@ -7,3 +7,22 @@ export const login = (user) => {
     data: user
   })
 }
+
+
+export const validate = ()=>{ // token
+  return axios.request({
+    url:'/validate'
+  })
+}
+
+
+export const upload = (fd) =>{
+  return axios.request({
+    url: '/avatar',
+    method:'post',
+    headers:{
+      'content-type':'multipart/form-data'
+    },
+    data:fd
+  })
+}
