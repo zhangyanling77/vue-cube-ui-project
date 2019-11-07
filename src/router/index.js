@@ -35,7 +35,7 @@ let router =  new Router({
     }, {
       path: '/login',
       name: 'login',
-      component: loadable(() => import('@/views/Login.vue'))
+      component: loadable(() => import('@/views/Login/index.vue'))
     }
   ],
 });
