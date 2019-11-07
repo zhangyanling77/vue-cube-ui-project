@@ -11,12 +11,12 @@ npm install
 npm run serve
 ```
 
-### 生产环境编辑及压缩
+### 生产环境编译及压缩
 ```
 npm run build
 ```
 
-### Lints and fixes files
+### 规则检测及修复文件问题
 ```
 npm run lint
 ```
