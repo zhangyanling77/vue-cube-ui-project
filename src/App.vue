@@ -3,7 +3,13 @@
     <div class="container">
       <transition :name="move">
         <!-- 会根据路径切换 来显示对应的页面 -->
-        <router-view></router-view>
+        <keep-alive>
+          <router-view v-if="$router.meta.keepAlive"></router-view>
+        </keep-alive>
+      </transition>
+      
+      <transition :name="move">
+         <router-view v-if="!$router.meta.keepAlive"></router-view>
       </transition>
     </div>
     <div class="footer">
