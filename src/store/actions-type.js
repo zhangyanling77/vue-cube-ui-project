@@ -20,3 +20,10 @@ export const CLEAR_TOKEN = 'CLEAR_TOKEN'
 // 5) 设置用户
 export const LOGIN = 'LOGIN';
 export const SET_USER = 'SET_USER'
+
+// 实时校验用户的登录状态
+export const VALIDATE = 'VALIDATE'
+
+// 设置菜单权限
+export const SET_MENU_LIST = 'SET_MENU_LIST'
+export const UPLOAD = 'UPLOAD'
