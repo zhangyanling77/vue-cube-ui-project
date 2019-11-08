@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import { Toast } from 'cube-ui';
 import home from './modules/home'
 import * as types from './actions-type'
-import { login } from '@/api/user'
+import { login, validate, upload } from '@/api/user'
 
 Vue.use(Vuex);
 
@@ -13,7 +13,9 @@ export default new Vuex.Store({
   },
   state: {
     user: {}, // 存放用户信息
-    ajaxToken: [] // 准备一个容器 放所有请求的
+    ajaxToken: [], // 准备一个容器 放所有请求的
+    hasPermission: false,
+    menPermisssion: false
   },
   mutations: {
     // 发布订阅
@@ -28,6 +30,13 @@ export default new Vuex.Store({
     },
     [types.SET_USER](state, payload) {
       state.user = payload
+      state.hasPermission = true
+    },
+    [types.SET_MENU_LIST](state){
+      state.menuPermission = true;
+    },
+    [types.UPLOAD](state,url){
+      state.user = {...state.user,url}
     }
   },
   actions: {
@@ -44,6 +53,20 @@ export default new Vuex.Store({
           time: 2000
         }).show(); 
       }
+    },
+    async [types.VALIDATE]({commit}){
+      try{// 验证是否登录 将信息存入vuex中
+        let user = awaite = validate()
+        commit(types.SET_USER,user);
+        return true // 验证成功
+      } catch(e) {
+        console.log(e)
+        return false
+      }
+    },
+    async [types.UPLOAD]({commit}, fd){
+      let {url} = await upload(fd)
+      commit(types.UPLOAD, url)
     }
   }
 });
