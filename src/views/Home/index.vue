@@ -75,11 +75,30 @@ export default {
     ...mapMutations([types.SET_CURRENT_LESSON]),
     ...mapActions([types.SET_CATEGORIES, types.SET_SLIDES])
   },
+  activated(){ // 激活
+    let position = sessionStorage.getItem('position') || 0;
+    this.$refs.list.$el.scrollTop = position;
+  },
+  deactivated(){ // 失活
+
+  },
   mounted() {
     // this.$store.dispatch("home/setCategories");
     // 1)默认加载分类  和 轮播图数据
     this[types.SET_CATEGORIES](); // 没有依赖关系的
     this[types.SET_SLIDES]();
+    // 防抖 定时器 节流 时差
+    let timer
+    this.$refs.list.$el.addEventListener('scroll',(e)=>{
+      if(timer){
+        clearTimeout(timer);
+      }
+      // 做防抖操作 存储滚动条位置
+      timer = setTimeout(() => {
+        sessionStorage.setItem('position',e.target.scrollTop);
+      }, 50);
+    })
+    
   }
 };
 </script>
