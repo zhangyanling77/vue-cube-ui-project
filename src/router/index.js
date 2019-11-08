@@ -14,7 +14,8 @@ let router =  new Router({
       name: 'home',
       component: Home,
       meta: {
-        idx: 0
+        idx: 0,
+        keepAlive: true // 需要缓存
       }
     },
     {
@@ -22,7 +23,9 @@ let router =  new Router({
       name: 'course', 
       component: loadable(() => import('@/views/Course/index.vue')),
       meta: {
-        idx: 1
+        idx: 1,
+        keepAlive: true,
+        needLogin: true // 需要登陆才能访问
       }
     },
     {
@@ -30,19 +33,29 @@ let router =  new Router({
       name: 'profile', 
       component: loadable(() => import('@/views/Profile/index.vue')),
       meta: {
-        idx: 2
+        idx: 2,
+        keepAlive: true // 需要缓存
       }
-    }, {
+    }, 
+    {
       path: '/login',
       name: 'login',
       component: loadable(() => import('@/views/Login/index.vue'))
+    }, 
+    {
+      path: '*',
+      component: {
+        render(h) {
+          return <h1> Not Found </h1>
+        }
+      }
     }
   ],
 });
 
 Object.values(hooks).forEach(hook => {
   // 路由切换之前
-  router.deforeEach(hook)
+  router.deforeEach(hook.bind(router))
 })
 
 export default router
