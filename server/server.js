@@ -2,9 +2,9 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const router = new Router();
 const bodyParser = require('koa-bodyparser');
-const static = require('koa-static');
-const multer = require('koa-multer')
-const jwt = require('jwt-simple');
+const static = require('koa-static'); // 静态资源访问
+const multer = require('koa-multer'); // 支持上传文件
+const jwt = require('jwt-simple'); 
 
 const app = new Koa();
 const cors = require('koa2-cors');
@@ -43,6 +43,7 @@ router.get('/api/category', async ctx => {
     }
 });
 
+// 休眠
 const sleep = (time) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -94,13 +95,8 @@ let menuList = [{
     name: '联系我',
     auth: 'contcat',
     path: '/contcat'
-}
-// ,{
-//     name: '服务',
-//     auth: 'service',
-//     path: '/service'
-// }
-]
+}]
+
 router.post('/api/login', async ctx => {
     // 登录接口
     let { username, password } = ctx.request.body

@@ -31,7 +31,6 @@ export default {
     }
   },
   mutations: { // 同步状态的
-    // 1) 这个是设置分类
     [types.SET_CATEGORIES](state, payload) {
       state.categories = payload; // 更新状态
     },
